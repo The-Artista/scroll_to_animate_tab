@@ -56,18 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,116 +76,30 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ScrollToAnimateTab(
-        tabs: [
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 1'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
+        isOutlineBorder: false,
+        backgroundColor: Colors.orange,
+        tabs: List.generate(10, (index) => ScrollableListTab(
+            tab: ListTab(
+              label: Text('Label ${index + 1}'),
+              showIconOnList: false
+            ),
+            body: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (_, index) => ListTile(
+                leading: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+                  alignment: Alignment.center,
+                  child: Text("${index + 1}"),
                 ),
-              )),
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 2'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
-                ),
-              )),
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 3'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
-                ),
-              )),
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 4'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
-                ),
-              )),
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 5'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
-                ),
-              )),
-          ScrollableListTab(
-              tab: ListTab(label: Text('Label 6'), icon: Icon(Icons.group), showIconOnList: false),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (_, index) => ListTile(
-                  leading: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    alignment: Alignment.center,
-                    child: Text(index.toString()),
-                  ),
-                  title: Text('List element $index'),
-                ),
-              )),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+                title: Text('List element ${index + 1}'),
+              ),
+            )
+        )),
+      )
     );
   }
 }

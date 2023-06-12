@@ -2,25 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 const Duration _kScrollDuration = Duration(milliseconds: 150);
-const EdgeInsetsGeometry _kTabMargin = EdgeInsets.symmetric(
-  horizontal: 10,
-  vertical: 5,
-);
+const EdgeInsetsGeometry _kTabMargin = EdgeInsets.symmetric(vertical: 5, horizontal: 8);
+const EdgeInsetsGeometry _kTabPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 12);
 
 const SizedBox _kSizedBoxW8 = SizedBox(width: 8);
 
 /// Create a new [ScrollToAnimateTab]
 class ScrollToAnimateTab extends StatefulWidget {
-  /// Create a new [ScrollToAnimateTab]
-  const ScrollToAnimateTab({
-    required this.tabs,
-    super.key,
-    this.tabHeight = kToolbarHeight,
-    this.tabAnimationDuration = _kScrollDuration,
-    this.bodyAnimationDuration = _kScrollDuration,
-    this.tabAnimationCurve = Curves.decelerate,
-    this.bodyAnimationCurve = Curves.decelerate,
-  });
 
   /// List of tabs to be rendered.
   final List<ScrollableListTab> tabs;
@@ -39,6 +27,26 @@ class ScrollToAnimateTab extends StatefulWidget {
 
   /// Animation curve used when changing index of inner [ScrollView]s.
   final Curve? bodyAnimationCurve;
+
+  /// Change Tab Background Color
+  final Color? backgroundColor;
+
+  /// Change Tab border
+  final bool isOutlineBorder;
+
+
+  /// Create a new [ScrollToAnimateTab]
+  const ScrollToAnimateTab({
+    required this.tabs,
+    super.key,
+    this.tabHeight = kToolbarHeight,
+    this.tabAnimationDuration = _kScrollDuration,
+    this.bodyAnimationDuration = _kScrollDuration,
+    this.tabAnimationCurve = Curves.decelerate,
+    this.bodyAnimationCurve = Curves.decelerate,
+    this.backgroundColor = Colors.transparent,
+    this.isOutlineBorder = false,
+  });
 
   @override
   _ScrollToAnimateTabState createState() => _ScrollToAnimateTabState();
@@ -64,7 +72,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
       children: [
         Container(
           height: widget.tabHeight,
-          color: Theme.of(context).cardColor,
+          color: widget.backgroundColor,
           child: ScrollablePositionedList.builder(
             itemCount: widget.tabs.length,
             scrollDirection: Axis.horizontal,
@@ -76,34 +84,29 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                 valueListenable: _index,
                 builder: (_, i, __) {
                   final selected = index == i;
-                  final borderColor = selected ? tab.activeBackgroundColor : Theme.of(context).dividerColor;
-                  return Container(
-                    height: 32,
-                    margin: _kTabMargin,
-                    decoration: BoxDecoration(
-                      color: selected ? tab.activeBackgroundColor : tab.inactiveBackgroundColor,
-                      borderRadius: tab.borderRadius,
-                    ),
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(
-                          selected ? Colors.white : Colors.grey,
-                        ),
-                        backgroundColor: MaterialStateProperty.all(
-                          selected ? tab.activeBackgroundColor : tab.inactiveBackgroundColor,
-                        ),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        side: MaterialStateProperty.all(
-                          BorderSide(
-                            color: borderColor,
-                          ),
-                        ),
-                        elevation: MaterialStateProperty.all(0),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: tab.borderRadius)),
+
+                  return GestureDetector(
+                    onTap: () => _onTabPressed(index),
+                    child: Container(
+                      margin: _kTabMargin,
+                      padding: _kTabPadding,
+                      alignment: Alignment.center,
+                      decoration: widget.isOutlineBorder ? BoxDecoration(
+                        color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
+                        borderRadius: tab.borderRadius,
+                        border: Border.all(
+                          color: selected ? tab.tabActiveColor : tab.borderColor
+                        )
+                      ) : BoxDecoration(
+                          border: Border(
+                          bottom: BorderSide(
+                            color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
+                            width: 1.5
+                          )
+                        )
                       ),
-                      child: _buildTab(index),
-                      onPressed: () => _onTabPressed(index),
-                    ),
+                      child:  _buildTab(index),
+                    )
                   );
                 },
               );
@@ -112,6 +115,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
         ),
         Expanded(
           child: ScrollablePositionedList.builder(
+            shrinkWrap: true,
             itemScrollController: _bodyScrollController,
             itemPositionsListener: _bodyPositionsListener,
             itemCount: widget.tabs.length,
@@ -120,7 +124,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: _kTabMargin.add(const EdgeInsets.all(5.0)),
+                  padding: _kTabMargin.add(const EdgeInsets.all(5)),
                   child: _buildInnerTab(index),
                 ),
                 Flexible(
@@ -138,7 +142,10 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
     final tab = widget.tabs[index].tab;
     const textStyle = TextStyle(
       fontWeight: FontWeight.w500,
+      color: Colors.black,
+      fontSize: 16
     );
+
     return Builder(
       builder: (_) {
         if (tab.icon == null) return tab.label;
@@ -163,7 +170,11 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
-      children: [tab.icon ?? const SizedBox(), _kSizedBoxW8, tab.label],
+      children: [
+        tab.icon ?? const SizedBox(),
+        _kSizedBoxW8,
+        tab.label
+      ],
     );
   }
 
@@ -219,11 +230,11 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
 class ListTab {
   /// Create a new [ListTab]
   const ListTab({
-    this.icon,
     required this.label,
-    this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
-    this.activeBackgroundColor = Colors.blue,
-    this.inactiveBackgroundColor = Colors.transparent,
+    this.icon,
+    this.borderRadius = const BorderRadius.all(Radius.circular(5)),
+    this.tabActiveColor = Colors.blue,
+    this.tabInactiveColor = Colors.transparent,
     this.showIconOnList = false,
     this.borderColor = Colors.grey,
   });
@@ -239,10 +250,10 @@ class ListTab {
   final BorderRadiusGeometry borderRadius;
 
   /// Color to be used when the tab is selected.
-  final Color activeBackgroundColor;
+  final Color tabActiveColor;
 
   /// Color to be used when tab is not selected
-  final Color inactiveBackgroundColor;
+  final Color tabInactiveColor;
 
   /// If true, the [icon] will also be shown to the user in the scrollable list.
   final bool showIconOnList;
