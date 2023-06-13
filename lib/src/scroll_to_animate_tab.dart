@@ -14,27 +14,20 @@ enum IconPosition{
   right
 }
 
-enum TabBarBorder{
-  outline,
-  underline,
-}
-
 /// Create a new [ScrollToAnimateTab]
 class ScrollToAnimateTab extends StatefulWidget {
-
 
   /// Create a new [ScrollToAnimateTab]
   const ScrollToAnimateTab({
     required this.tabs,
-    super.key,
     this.tabHeight = kToolbarHeight,
     this.tabAnimationDuration = _kScrollDuration,
     this.bodyAnimationDuration = _kScrollDuration,
     this.tabAnimationCurve = Curves.decelerate,
     this.bodyAnimationCurve = Curves.decelerate,
     this.backgroundColor = Colors.transparent,
-    this.tabBarBorder = TabBarBorder.underline,
-    this.iconPosition = IconPosition.left
+    this.iconPosition = IconPosition.left,
+    super.key,
   });
 
   /// List of tabs to be rendered.
@@ -57,9 +50,6 @@ class ScrollToAnimateTab extends StatefulWidget {
 
   /// Change Tab Background Color
   final Color? backgroundColor;
-
-  /// Change Tab Border
-  final TabBarBorder tabBarBorder;
 
   /// Change Icon Position
   final IconPosition? iconPosition;
@@ -104,35 +94,14 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                 builder: (_, i, __) {
                   final selected = index == i;
 
-                  if(widget.tabBarBorder == TabBarBorder.outline){
-                    tabDecoration = BoxDecoration(
-                        color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
-                        borderRadius: tab.borderRadius,
-                        border: Border.all(
-                            color: selected ? tab.tabActiveColor : tab.borderColor
-                        )
-                    );
-                  }
-
-                  if(widget.tabBarBorder == TabBarBorder.underline){
-                    tabDecoration = BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: selected ? tab.tabActiveColor : Colors.transparent,
-                              width: 1.5
-                          )
-                        )
-                    );
-                  }
-
                   return GestureDetector(
                     onTap: () => _onTabPressed(index),
                     child: Container(
                       margin: _kTabMargin,
                       padding: _kTabPadding,
                       alignment: Alignment.center,
-                      decoration: tabDecoration,
-                      child:  _buildTab(index),
+                      decoration: selected ? tab.activeTabDecoration : tab.inActiveTabDecoration,
+                      child: _buildTab(index),
                     )
                   );
                 },
@@ -175,17 +144,27 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
 
     return Builder(
       builder: (_) {
-        if (tab.icon == null) return tab.label;
-        if (!tab.showIconOnList) {
-          return DefaultTextStyle(style: textStyle, child: tab.label);
-        }
+        if (tab.icon == null) return DefaultTextStyle(style: textStyle, child: tab.label);
+
         return DefaultTextStyle(
           style: textStyle,
-          child: Row(
+          child: widget.iconPosition == IconPosition.left ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: [tab.icon ?? const SizedBox(), _kSizedBoxW8, tab.label],
-          ),
+            children: [
+              tab.icon ?? const SizedBox(),
+              _kSizedBoxW8,
+              tab.label
+            ],
+          ) : widget.iconPosition == IconPosition.right ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              tab.label,
+              _kSizedBoxW8,
+              tab.icon ?? const SizedBox(),
+            ],
+          ) : tab.label,
         );
       },
     );
@@ -272,12 +251,9 @@ class ListTab {
   /// Create a new [ListTab]
   const ListTab({
     required this.label,
+    required this.activeTabDecoration,
+    required this.inActiveTabDecoration,
     this.icon,
-    this.borderRadius = const BorderRadius.all(Radius.circular(5)),
-    this.tabActiveColor = Colors.blue,
-    this.tabInactiveColor = Colors.transparent,
-    this.showIconOnList = false,
-    this.borderColor = Colors.grey,
   });
 
   /// Trailing widget for a tab, typically an [Icon].
@@ -286,21 +262,11 @@ class ListTab {
   /// Label to be shown in the tab, must be non-null.
   final Widget label;
 
-  /// [BorderRadius] for the a tab at the bottom tab view.
-  /// This won't affect the tab in the scrollable list.
-  final BorderRadiusGeometry borderRadius;
+  /// Change Active Tab Decoration
+  final Decoration activeTabDecoration;
 
-  /// Color to be used when the tab is selected.
-  final Color tabActiveColor;
-
-  /// Color to be used when tab is not selected
-  final Color tabInactiveColor;
-
-  /// If true, the [icon] will also be shown to the user in the scrollable list.
-  final bool showIconOnList;
-
-  /// Color of the [Border] property of the inner tab [Container].
-  final Color borderColor;
+  /// Change Inactive Tab Decoration.
+  final Decoration inActiveTabDecoration;
 }
 
 
