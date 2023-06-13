@@ -76,12 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ScrollToAnimateTab(
-        isOutlineBorder: true,
-        iconPosition: IconPosition.top,
+
         tabs: List.generate(10, (index) => ScrollableListTab(
             tab: ListTab(
               label: Text('Label ${index + 1}'),
-              icon: const Icon(Icons.ac_unit, size: 14,),
+              //icon: const Icon(Icons.ac_unit, size: 14,),
               showIconOnList: false
             ),
             body: ListView.builder(

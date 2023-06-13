@@ -14,6 +14,11 @@ enum IconPosition{
   right
 }
 
+enum TabBarBorder{
+  outline,
+  underline,
+}
+
 /// Create a new [ScrollToAnimateTab]
 class ScrollToAnimateTab extends StatefulWidget {
 
@@ -28,7 +33,7 @@ class ScrollToAnimateTab extends StatefulWidget {
     this.tabAnimationCurve = Curves.decelerate,
     this.bodyAnimationCurve = Curves.decelerate,
     this.backgroundColor = Colors.transparent,
-    this.isOutlineBorder = false,
+    this.tabBarBorder = TabBarBorder.underline,
     this.iconPosition = IconPosition.left
   });
 
@@ -36,7 +41,7 @@ class ScrollToAnimateTab extends StatefulWidget {
   final List<ScrollableListTab> tabs;
 
   /// Height of the tab at the top of the view.
-  final double? tabHeight;
+  final double tabHeight;
 
   /// Duration of tab change animation.
   final Duration? tabAnimationDuration;
@@ -54,10 +59,10 @@ class ScrollToAnimateTab extends StatefulWidget {
   final Color? backgroundColor;
 
   /// Change Tab Border
-  final bool isOutlineBorder;
+  final TabBarBorder tabBarBorder;
 
   /// Change Icon Position
-  final IconPosition iconPosition;
+  final IconPosition? iconPosition;
 
   @override
   _ScrollToAnimateTabState createState() => _ScrollToAnimateTabState();
@@ -77,8 +82,11 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
     _bodyPositionsListener.itemPositions.addListener(_onInnerViewScrolled);
   }
 
+  late Decoration tabDecoration;
+
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Container(
@@ -96,26 +104,34 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                 builder: (_, i, __) {
                   final selected = index == i;
 
+                  if(widget.tabBarBorder == TabBarBorder.outline){
+                    tabDecoration = BoxDecoration(
+                        color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
+                        borderRadius: tab.borderRadius,
+                        border: Border.all(
+                            color: selected ? tab.tabActiveColor : tab.borderColor
+                        )
+                    );
+                  }
+
+                  if(widget.tabBarBorder == TabBarBorder.underline){
+                    tabDecoration = BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: selected ? tab.tabActiveColor : Colors.transparent,
+                              width: 1.5
+                          )
+                        )
+                    );
+                  }
+
                   return GestureDetector(
                     onTap: () => _onTabPressed(index),
                     child: Container(
                       margin: _kTabMargin,
                       padding: _kTabPadding,
                       alignment: Alignment.center,
-                      decoration: widget.isOutlineBorder ? BoxDecoration(
-                        color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
-                        borderRadius: tab.borderRadius,
-                        border: Border.all(
-                          color: selected ? tab.tabActiveColor : tab.borderColor
-                        )
-                      ) : BoxDecoration(
-                          border: Border(
-                          bottom: BorderSide(
-                            color: selected ? tab.tabActiveColor : tab.tabInactiveColor,
-                            width: 1.5
-                          )
-                        )
-                      ),
+                      decoration: tabDecoration,
                       child:  _buildTab(index),
                     )
                   );
