@@ -6,9 +6,31 @@ const EdgeInsetsGeometry _kTabMargin = EdgeInsets.symmetric(vertical: 5, horizon
 const EdgeInsetsGeometry _kTabPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 12);
 
 const SizedBox _kSizedBoxW8 = SizedBox(width: 8);
+const SizedBox _kSizedBoxH8 = SizedBox(height: 8);
+
+enum IconPosition{
+  top,
+  left,
+  right
+}
 
 /// Create a new [ScrollToAnimateTab]
 class ScrollToAnimateTab extends StatefulWidget {
+
+
+  /// Create a new [ScrollToAnimateTab]
+  const ScrollToAnimateTab({
+    required this.tabs,
+    super.key,
+    this.tabHeight = kToolbarHeight,
+    this.tabAnimationDuration = _kScrollDuration,
+    this.bodyAnimationDuration = _kScrollDuration,
+    this.tabAnimationCurve = Curves.decelerate,
+    this.bodyAnimationCurve = Curves.decelerate,
+    this.backgroundColor = Colors.transparent,
+    this.isOutlineBorder = false,
+    this.iconPosition = IconPosition.left
+  });
 
   /// List of tabs to be rendered.
   final List<ScrollableListTab> tabs;
@@ -31,22 +53,11 @@ class ScrollToAnimateTab extends StatefulWidget {
   /// Change Tab Background Color
   final Color? backgroundColor;
 
-  /// Change Tab border
+  /// Change Tab Border
   final bool isOutlineBorder;
 
-
-  /// Create a new [ScrollToAnimateTab]
-  const ScrollToAnimateTab({
-    required this.tabs,
-    super.key,
-    this.tabHeight = kToolbarHeight,
-    this.tabAnimationDuration = _kScrollDuration,
-    this.bodyAnimationDuration = _kScrollDuration,
-    this.tabAnimationCurve = Curves.decelerate,
-    this.bodyAnimationCurve = Curves.decelerate,
-    this.backgroundColor = Colors.transparent,
-    this.isOutlineBorder = false,
-  });
+  /// Change Icon Position
+  final IconPosition iconPosition;
 
   @override
   _ScrollToAnimateTabState createState() => _ScrollToAnimateTabState();
@@ -71,7 +82,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
     return Column(
       children: [
         Container(
-          height: widget.tabHeight,
+          height: widget.iconPosition == IconPosition.left || widget.iconPosition == IconPosition.right ? widget.tabHeight : 70,
           color: widget.backgroundColor,
           child: ScrollablePositionedList.builder(
             itemCount: widget.tabs.length,
@@ -167,7 +178,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
   Widget _buildTab(int index) {
     final tab = widget.tabs[index].tab;
     if (tab.icon == null) return tab.label;
-    return Row(
+    return widget.iconPosition == IconPosition.left ? Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -175,7 +186,21 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
         _kSizedBoxW8,
         tab.label
       ],
-    );
+    ) : widget.iconPosition == IconPosition.right ? Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        tab.label,
+        _kSizedBoxW8,
+        tab.icon ?? const SizedBox(),
+      ],
+    ) : widget.iconPosition == IconPosition.top ? Column(
+      children: [
+        tab.icon ?? const SizedBox(),
+        _kSizedBoxH8,
+        tab.label,
+      ],
+    ) : tab.label;
   }
 
   Future<void> _onInnerViewScrolled() async {
