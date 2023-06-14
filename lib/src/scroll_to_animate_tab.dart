@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_to_animate_tab/src/models.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-const Duration _kScrollDuration = Duration(milliseconds: 150);
-const EdgeInsetsGeometry _kTabMargin = EdgeInsets.symmetric(vertical: 5, horizontal: 8);
-const EdgeInsetsGeometry _kTabPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 12);
-
-const SizedBox _kSizedBoxW8 = SizedBox(width: 8);
-const SizedBox _kSizedBoxH8 = SizedBox(height: 8);
-
-enum IconPosition{
-  top,
-  left,
-  right
-}
+const Duration _kScrollDuration = Duration(milliseconds: 200);
+const EdgeInsetsGeometry _kTabMargin = EdgeInsets.symmetric(
+  vertical: 5,
+  horizontal: 8,
+);
+const EdgeInsetsGeometry _kTabPadding = EdgeInsets.symmetric(
+  vertical: 5,
+  horizontal: 12,
+);
 
 /// Create a new [ScrollToAnimateTab]
 class ScrollToAnimateTab extends StatefulWidget {
-
   /// Create a new [ScrollToAnimateTab]
   const ScrollToAnimateTab({
     required this.tabs,
@@ -26,9 +23,8 @@ class ScrollToAnimateTab extends StatefulWidget {
     this.tabAnimationCurve = Curves.decelerate,
     this.bodyAnimationCurve = Curves.decelerate,
     this.backgroundColor = Colors.transparent,
-    this.iconPosition = IconPosition.left,
-    required this.activeTabDecoration,
-    required this.inActiveTabDecoration,
+    this.activeTabDecoration,
+    this.inActiveTabDecoration,
     super.key,
   });
 
@@ -53,14 +49,11 @@ class ScrollToAnimateTab extends StatefulWidget {
   /// Change Tab Background Color
   final Color? backgroundColor;
 
-  /// Change Icon Position
-  final IconPosition? iconPosition;
-
   /// Change Active Tab Decoration
-  final Decoration activeTabDecoration;
+  final TabDecoration? activeTabDecoration;
 
   /// Change Inactive Tab Decoration.
-  final Decoration inActiveTabDecoration;
+  final TabDecoration? inActiveTabDecoration;
 
   @override
   _ScrollToAnimateTabState createState() => _ScrollToAnimateTabState();
@@ -84,11 +77,10 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Container(
-          height: widget.iconPosition == IconPosition.left || widget.iconPosition == IconPosition.right ? widget.tabHeight : 70,
+          height: widget.tabHeight,
           color: widget.backgroundColor,
           child: ScrollablePositionedList.builder(
             itemCount: widget.tabs.length,
@@ -96,7 +88,6 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
             itemScrollController: _tabScrollController,
             padding: const EdgeInsets.symmetric(vertical: 2.5),
             itemBuilder: (context, index) {
-              final tab = widget.tabs[index].tab;
               return ValueListenableBuilder<int>(
                 valueListenable: _index,
                 builder: (_, i, __) {
@@ -108,9 +99,9 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                       margin: _kTabMargin,
                       padding: _kTabPadding,
                       alignment: Alignment.center,
-                      decoration: selected ? widget.activeTabDecoration : widget.inActiveTabDecoration,
-                      child: _buildTab(index),
-                    )
+                      decoration: selected ? widget.activeTabDecoration?.decoration : widget.inActiveTabDecoration?.decoration,
+                      child: _buildTab(index, selected),
+                    ),
                   );
                 },
               );
@@ -129,11 +120,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
               children: [
                 Padding(
                   padding: _kTabMargin.add(const EdgeInsets.all(5)),
-                  child: Text(
-                    "Label 1"
-                  )
-
-                  /*_buildInnerTab(index)*/,
+                  child: _buildInnerTab(index),
                 ),
                 Flexible(
                   child: widget.tabs[index].body,
@@ -147,67 +134,35 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
   }
 
   Widget _buildInnerTab(int index) {
-    final tab = widget.tabs[index].tab;
-    const textStyle = TextStyle(
-      fontWeight: FontWeight.w500,
-      color: Colors.black,
-      fontSize: 16
-    );
-
+    final tab = widget.tabs[index];
     return Builder(
       builder: (_) {
-        if (tab.icon == null) return DefaultTextStyle(style: textStyle, child: tab.label);
-
-        return DefaultTextStyle(
-          style: textStyle,
-          child: widget.iconPosition == IconPosition.left ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              tab.icon ?? const SizedBox(),
-              _kSizedBoxW8,
-              tab.label
-            ],
-          ) : widget.iconPosition == IconPosition.right ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              tab.label,
-              _kSizedBoxW8,
-              tab.icon ?? const SizedBox(),
-            ],
-          ) : tab.label,
+        if (tab.bodyLabelDecoration != null) {
+          return tab.bodyLabelDecoration!;
+        }
+        return Text(
+          tab.label.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 21,
+          ),
         );
       },
     );
   }
 
-  Widget _buildTab(int index) {
-    final tab = widget.tabs[index].tab;
-    if (tab.icon == null) return tab.label;
-    return widget.iconPosition == IconPosition.left ? Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        tab.icon ?? const SizedBox(),
-        _kSizedBoxW8,
-        tab.label
-      ],
-    ) : widget.iconPosition == IconPosition.right ? Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        tab.label,
-        _kSizedBoxW8,
-        tab.icon ?? const SizedBox(),
-      ],
-    ) : widget.iconPosition == IconPosition.top ? Column(
-      children: [
-        tab.icon ?? const SizedBox(),
-        _kSizedBoxH8,
-        tab.label,
-      ],
-    ) : tab.label;
+  Widget _buildTab(int index, bool isSelected) {
+    if (isSelected) {
+      return Text(
+        widget.tabs[index].label,
+        style: widget.activeTabDecoration?.textStyle,
+      );
+    }
+    return Text(
+      widget.tabs[index].label,
+      style: widget.inActiveTabDecoration?.textStyle,
+    );
   }
 
   Future<void> _onInnerViewScrolled() async {
@@ -255,38 +210,4 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
     _bodyPositionsListener.itemPositions.removeListener(_onInnerViewScrolled);
     return super.dispose();
   }
-}
-
-
-/// Create a new [ListTab]
-class ListTab {
-  /// Create a new [ListTab]
-  const ListTab({
-    required this.label,
-    this.icon,
-  });
-
-  /// Trailing widget for a tab, typically an [Icon].
-  final Widget? icon;
-
-  /// Label to be shown in the tab, must be non-null.
-  final Widget label;
-}
-
-
-/// A skeleton class to be used in order to build the scrollable list.
-class ScrollableListTab {
-  /// A skeleton class to be used in order to build the scrollable list.
-  /// [ScrollableListTab.tab] will be used on both tab bar and scrollable body.
-  ScrollableListTab({required this.tab, required this.body});
-
-  /// A data class for tab properties
-  final ListTab tab;
-
-  /// A single widget in the scrollable tab list.
-  /// Make sure that [body] is created with [ScrollView.shrinkWrap] = true
-  /// and [ScrollView.physics] = [NeverScrollableScrollPhysics].
-  /// This will ensure that all the children will layout correctly.
-  /// For more details see [ScrollView].
-  final ScrollView body;
 }
