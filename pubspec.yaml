@@ -1,6 +1,6 @@
 name: scroll_to_animate_tab
 description: A Flutter widget that can scroll and change tab when scrolling page vertically.
-version: 0.1.0+1
+version: 0.0.1+1
 homepage: https://github.com/Mirza-Mahmud-2021/scroll_to_animate_tab
 repository: https://github.com/Mirza-Mahmud-2021/scroll_to_animate_tab
 
