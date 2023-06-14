@@ -76,7 +76,83 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ScrollToAnimateTab(
-        tabs: List.generate(10, (index) => ScrollableListTab(
+        activeTabDecoration: BoxDecoration(
+            color: Colors.red,
+            border: Border.all(color: Colors.blue)
+        ),
+        inActiveTabDecoration: const BoxDecoration(
+            color: Colors.transparent,
+            border: Border(
+                bottom: BorderSide(color: Colors.black, width: 1.5)
+            )
+        ),
+        tabs: [
+          ScrollableListTab(
+              tab: ListTab(
+                label: Text('Label 1'),
+                icon: const Icon(Icons.ac_unit, size: 14),
+              ),
+              body: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (_, index) => ListTile(
+                  leading: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+                    alignment: Alignment.center,
+                    child: Text("${index + 1}"),
+                  ),
+                  title: Text('List element ${index + 1}'),
+                ),
+              )
+          ),
+          ScrollableListTab(
+              tab: ListTab(
+                label: Text('Label 2'),
+                icon: const Icon(Icons.ac_unit, size: 14),
+              ),
+              body: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (_, index) => ListTile(
+                  leading: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+                    alignment: Alignment.center,
+                    child: Text("${index + 1}"),
+                  ),
+                  title: Text('List element ${index + 1}'),
+                ),
+              )
+          ),
+          ScrollableListTab(
+              tab: ListTab(
+                label: Text('Label 3'),
+                icon: const Icon(Icons.ac_unit, size: 14),
+              ),
+              body: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (_, index) => ListTile(
+                  leading: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+                    alignment: Alignment.center,
+                    child: Text("${index + 1}"),
+                  ),
+                  title: Text('List element ${index + 1}'),
+                ),
+              )
+          ),
+        ]
+
+        /*List.generate(10, (index) => ScrollableListTab(
             tab: ListTab(
               label: Text('Label ${index + 1}'),
               icon: const Icon(Icons.ac_unit, size: 14),
@@ -106,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text('List element ${index + 1}'),
               ),
             )
-        )),
+        ))*/,
       )
     );
   }

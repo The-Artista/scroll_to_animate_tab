@@ -27,6 +27,8 @@ class ScrollToAnimateTab extends StatefulWidget {
     this.bodyAnimationCurve = Curves.decelerate,
     this.backgroundColor = Colors.transparent,
     this.iconPosition = IconPosition.left,
+    required this.activeTabDecoration,
+    required this.inActiveTabDecoration,
     super.key,
   });
 
@@ -53,6 +55,12 @@ class ScrollToAnimateTab extends StatefulWidget {
 
   /// Change Icon Position
   final IconPosition? iconPosition;
+
+  /// Change Active Tab Decoration
+  final Decoration activeTabDecoration;
+
+  /// Change Inactive Tab Decoration.
+  final Decoration inActiveTabDecoration;
 
   @override
   _ScrollToAnimateTabState createState() => _ScrollToAnimateTabState();
@@ -100,7 +108,7 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                       margin: _kTabMargin,
                       padding: _kTabPadding,
                       alignment: Alignment.center,
-                      decoration: selected ? tab.activeTabDecoration : tab.inActiveTabDecoration,
+                      decoration: selected ? widget.activeTabDecoration : widget.inActiveTabDecoration,
                       child: _buildTab(index),
                     )
                   );
@@ -121,7 +129,11 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
               children: [
                 Padding(
                   padding: _kTabMargin.add(const EdgeInsets.all(5)),
-                  child: _buildInnerTab(index),
+                  child: Text(
+                    "Label 1"
+                  )
+
+                  /*_buildInnerTab(index)*/,
                 ),
                 Flexible(
                   child: widget.tabs[index].body,
@@ -251,8 +263,6 @@ class ListTab {
   /// Create a new [ListTab]
   const ListTab({
     required this.label,
-    required this.activeTabDecoration,
-    required this.inActiveTabDecoration,
     this.icon,
   });
 
@@ -261,12 +271,6 @@ class ListTab {
 
   /// Label to be shown in the tab, must be non-null.
   final Widget label;
-
-  /// Change Active Tab Decoration
-  final Decoration activeTabDecoration;
-
-  /// Change Inactive Tab Decoration.
-  final Decoration inActiveTabDecoration;
 }
 
 
