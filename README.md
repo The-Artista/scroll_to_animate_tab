@@ -22,3 +22,8 @@ Add dependency for package on your pubspec.yaml:
 |`Duration? bodyAnimationDuration`| [Optional] Duration of tab change animation |
 |`Curve? tabAnimationCurve`| [Optional] Animation curve used when animating tab change |
 |`Curve? bodyAnimationCurve`| [Optional] Animation curve used when changing index of inner [ScrollView]s |
+|`Color? backgroundColor`| [Optional] This property will help you to change the background color of tab bar |
+|`TabDecoration? activeTabDecoration`| [Optional] Change active tab decoration |
+|`TabDecoration? inActiveTabDecoration`| [Optional] Change inactive tab decoration |
+
+inside this [TabDecoration], it gives us `textStyle` property which is required that helps us to change tab label style and other is optional named `decoration` property which helps us to decorate our tab. 
