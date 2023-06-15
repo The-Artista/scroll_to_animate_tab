@@ -1,16 +1,24 @@
-# example
+# scroll_to_animate_tab
 
-A new Flutter project.
+A Flutter widget that is customizable and syncs the ScrollView with the tabs.
+Create distinct tabs that are coordinated with the internal ScrollView. The tabs come after the index of the scroll view.
 
-## Getting Started
+## Demo
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
+Add dependency for package on your pubspec.yaml:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+    dependencies:
+	    scroll_to_animate_tab: <latest>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ScrollToAnimateTab
+
+| Parameter | Definition |
+| -- | -- |
+|`List<ScrollableListTab> tabs`| List of tabs to be rendered |
+|`double tabHeight`| Height of the tab at the top of the view |
+|`Duration? tabAnimationDuration`| [Optional] Duration of tab change animation |
+|`Duration? bodyAnimationDuration`| [Optional] Duration of tab change animation |
+|`Curve? tabAnimationCurve`| [Optional] Animation curve used when animating tab change |
+|`Curve? bodyAnimationCurve`| [Optional] Animation curve used when changing index of inner [ScrollView]s |
