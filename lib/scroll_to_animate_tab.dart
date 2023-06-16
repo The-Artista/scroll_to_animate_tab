@@ -1,4 +1,5 @@
-/// A Very Good Project created by Very Good CLI.
+/// A Flutter widget that is customizable
+/// and syncs the ScrollView with the tabs.
 library scroll_to_animate_tab;
 
 export 'src/models.dart';
