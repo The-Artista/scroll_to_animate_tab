@@ -29,7 +29,7 @@ class ScrollToAnimateTab extends StatefulWidget {
   });
 
   /// List of tabs to be rendered.
-  final List<ScrollableListTab> tabs;
+  final List<ScrollableList> tabs;
 
   /// Height of the tab at the top of the view.
   final double tabHeight;
@@ -99,7 +99,9 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
                       margin: _kTabMargin,
                       padding: _kTabPadding,
                       alignment: Alignment.center,
-                      decoration: selected ? widget.activeTabDecoration?.decoration : widget.inActiveTabDecoration?.decoration,
+                      decoration: selected
+                          ? widget.activeTabDecoration?.decoration
+                          : widget.inActiveTabDecoration?.decoration,
                       child: _buildTab(index, selected),
                     ),
                   );
@@ -173,7 +175,8 @@ class _ScrollToAnimateTabState extends State<ScrollToAnimateTab> {
 
     /// Capture the index of the first [ItemPosition]. If the saved index is same
     /// with the current one do nothing and return.
-    final firstIndex = _bodyPositionsListener.itemPositions.value.elementAt(0).index;
+    final firstIndex =
+        _bodyPositionsListener.itemPositions.value.elementAt(0).index;
     if (_index.value == firstIndex) return;
 
     /// A new index has been detected.
