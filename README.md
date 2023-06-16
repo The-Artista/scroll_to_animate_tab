@@ -29,13 +29,22 @@ Add dependency for package on your pubspec.yaml:
 inside this [TabDecoration], it gives us `textStyle` property which is required that helps us to change tab label style and other is optional named `decoration` property which helps us to decorate our tab. 
 
 ## How to use
+
+Basic Example ->
+
+```dart
 Scaffold(
         body: ScrollToAnimateTab(
           activeTabDecoration: TabDecoration(
               textStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
               decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: const BorderRadius.all(Radius.circular(5)))),
           inActiveTabDecoration: TabDecoration(
-              textStyle: const TextStyle(color: Colors.black), decoration: BoxDecoration(border: Border.all(color: Colors.black12), borderRadius: const BorderRadius.all(Radius.circular(5)))),
+              textStyle: const TextStyle(color: Colors.black), 
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12), 
+                borderRadius: const BorderRadius.all(Radius.circular(5))
+              )
+          ),
           tabs: [
             ScrollableListTab(
                 label: "Hello",
@@ -128,3 +137,4 @@ Scaffold(
         ],
       )
     )
+```
