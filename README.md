@@ -5,7 +5,7 @@ Create distinct tabs that are coordinated with the internal ScrollView. The tabs
 index of the scroll view.
 
 ## Demo
-![scroll_to_animate_tab demo](./example/assets/ezgif-2-a1320babf6.gif "scroll_to_animate_tab demo")
+![scroll_to_animate_tab demo](https://www.ishaf.info/scroll_to_animate_tab_demo.gif "scroll_to_animate_tab demo")
 
 ## Installation
 
