@@ -1,3 +1,7 @@
+## 0.0.2+2
+
+package meta data 
+
 ## 0.0.2+1
 
 fix demo image
