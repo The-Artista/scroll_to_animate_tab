@@ -4,8 +4,6 @@ A Flutter widget that is customizable and syncs the ScrollView with the tabs.
 Create distinct tabs that are coordinated with the internal ScrollView. The tabs come after the
 index of the scroll view.
 
-** [Learn more](http://ishaf.info/scroll_to_animate_tab)!**
-
 ## Demo
 
 ![scroll_to_animate_tab demo](https://www.ishaf.info/scroll_to_animate_tab_demo.gif "scroll_to_animate_tab demo")
@@ -25,7 +23,6 @@ flutter pub add scroll_to_animate_tab
 ```
 
 ## API
-
 ### ScrollToAnimateTab
 
 | Parameter | Definition |
@@ -64,49 +61,45 @@ our tab.
 Basic Example ->
 
 ```dart
-ScrollToAnimateTab
-(
-activeTabDecoration: TabDecoration(
-textStyle: const TextStyle(
-color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
-decoration: BoxDecoration(
-border: Border.all(color: Colors.black),
-borderRadius: const BorderRadius.all(Radius.circular(5))
-)
-),
-inActiveTabDecoration: TabDecoration(
-textStyle: const TextStyle(color: Colors.black),
-decoration: BoxDecoration(
-border: Border.all(color: Colors.black12),
-borderRadius: const BorderRadius.all(Radius.circular(5))
-)
-),
-tabs: [
-ScrollableList(
-label: "Hello",
-body: ListView.builder(
-shrinkWrap: true,
-physics: const NeverScrollableScrollPhysics(),
-itemCount: 10,
-itemBuilder: (_, index) => ListTile(
-title: Text('List element ${index + 1}'),
-),
-)
-),
-ScrollableList(
-label: "hello 2",
-body: Column(
-children: List.generate(
-10,
-(index) => ListTile(
-title: Text('List element ${index + 1}'),
-)
-)
-,
-)
-)
-,
-]
+ScrollToAnimateTab(
+    activeTabDecoration: TabDecoration(
+        textStyle: const TextStyle(
+          color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: const BorderRadius.all(Radius.circular(5))
+        )
+    ),
+    inActiveTabDecoration: TabDecoration(
+        textStyle: const TextStyle(color: Colors.black),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black12),
+            borderRadius: const BorderRadius.all(Radius.circular(5))
+        )
+    ),
+    tabs: [
+        ScrollableList(
+            label: "Hello",
+            body: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (_, index) => ListTile(
+                title: Text('List element ${index + 1}'),
+                ),
+            )
+        ),
+        ScrollableList(
+            label: "hello 2",
+            body: Column( 
+                children: List.generate(
+                    10,
+                    (index) => ListTile(
+                    title: Text('List element ${index + 1}'),
+            )),
+            )
+        ),
+  ]
 )
 
 ```
