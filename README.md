@@ -6,51 +6,55 @@ index of the scroll view.
 
 ## Demo
 
-![scroll_to_animate_tab demo](https://www.ishaf.info/scroll_to_animate_tab_demo.gif "scroll_to_animate_tab demo")
+![scroll_to_animate_tab demo](https://pub-025eba96160d45eb8b4d209ff55bfdc6.r2.dev/scroll_to_animate_tab_demo.gif "scroll_to_animate_tab demo")
 
 ## Installation
 
 Add dependency for package on your pubspec.yaml:
 
-```yaml
+``` yaml
     dependencies:
 	    scroll_to_animate_tab: latest
 ```
+
 or
 
-```shell
+``` shell
+
 flutter pub add scroll_to_animate_tab
+
 ```
 
 ## API
+
 ### ScrollToAnimateTab
 
-| Parameter | Definition |
-|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`List<ScrollableList> tabs`| List of tabs to be rendered |
-|`double tabHeight`| Height of the tab at the top of the view |
-|`Duration? tabAnimationDuration`| [Optional] Duration of tab change animation |
-|`Duration? bodyAnimationDuration`| [Optional] Duration of tab change animation |
-|`Curve? tabAnimationCurve`| [Optional] Animation curve used when animating tab change |
-|`Curve? bodyAnimationCurve`| [Optional] Animation curve used when changing index of inner [ScrollView]s |
-|`Color? backgroundColor`| [Optional] This property will help you to change the background color of tab bar |
-|`TabDecoration? activeTabDecoration`| [Optional] Change active tab decoration |
-|`TabDecoration? inActiveTabDecoration`| [Optional] Change inactive tab decoration |
+| Parameter                              | Definition                                                                       |
+|----------------------------------------|----------------------------------------------------------------------------------|
+| `List<ScrollableList> tabs`            | List of tabs to be rendered                                                      |
+| `double tabHeight`                     | Height of the tab at the top of the view                                         |
+| `Duration? tabAnimationDuration`       | [Optional] Duration of tab change animation                                      |
+| `Duration? bodyAnimationDuration`      | [Optional] Duration of tab change animation                                      |
+| `Curve? tabAnimationCurve`             | [Optional] Animation curve used when animating tab change                        |
+| `Curve? bodyAnimationCurve`            | [Optional] Animation curve used when changing index of inner [ScrollView]s       |
+| `Color? backgroundColor`               | [Optional] This property will help you to change the background color of tab bar |
+| `TabDecoration? activeTabDecoration`   | [Optional] Change active tab decoration                                          |
+| `TabDecoration? inActiveTabDecoration` | [Optional] Change inactive tab decoration                                        |
 
 ### TabDecoration
 
-| Parameter | Definition |
-|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|TextStyle textStyle | TextStyle for tab label|
-|Decoration? decoration| decoration for tabs |
+| Parameter              | Definition              |
+|------------------------|-------------------------|
+| TextStyle textStyle    | TextStyle for tab label |
+| Decoration? decoration | decoration for tabs     |
 
 ### ScrollableList
 
-| Parameter | Definition                                                                                                                                                                        |
-|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|String label | A String for tab label and as headline of [ScrollableList.body]                                                                                                                   |
-|Widget? bodyLabelDecoration| A widget label for decorate body widget. by default its a `Text` widget as context [ScrollableList.label] with `color: Colors.black`,`fontWeight: FontWeight.bold`,`fontSize: 21` |
-|Widget body| A single widget in the scrollable tab list. You can use [Column] or any single scrollable widget. If you want to use [ScrollView] ([ListView]) then we suggest make sure that [body] is created with [ScrollView.shrinkWrap] = true and [ScrollView.physics] = [NeverScrollableScrollPhysics]. |
+| Parameter                   | Definition                                                                                                                                                                                                                                                                                     |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| String label                | A String for tab label and as headline of [ScrollableList.body]                                                                                                                                                                                                                                |
+| Widget? bodyLabelDecoration | A widget label for decorate body widget. by default its a `Text` widget as context [ScrollableList.label] with `color: Colors.black`,`fontWeight: FontWeight.bold`,`fontSize: 21`                                                                                                              |
+| Widget body                 | A single widget in the scrollable tab list. You can use [Column] or any single scrollable widget. If you want to use [ScrollView] ([ListView]) then we suggest make sure that [body] is created with [ScrollView.shrinkWrap] = true and [ScrollView.physics] = [NeverScrollableScrollPhysics]. |
 
 inside this [TabDecoration], it gives us `textStyle` property which is required that helps us to
 change tab label style and other is optional named `decoration` property which helps us to decorate
@@ -60,7 +64,7 @@ our tab.
 
 Basic Example ->
 
-```dart
+``` dart
 ScrollToAnimateTab(
     activeTabDecoration: TabDecoration(
         textStyle: const TextStyle(
